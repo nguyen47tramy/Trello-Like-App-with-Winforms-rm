@@ -6,30 +6,40 @@ namespace Trello
         {
             InitializeComponent();
         }
+        //create a list  to manage card's list 
+        //List<LinkedList<string>> cardList = new List<LinkedList<string>>();
+        List<CardLinkedList> cardList = new List<CardLinkedList>();
 
-        List<LinkedList<string>> tasks = new List<LinkedList<string>>();
-        List<TextBox> tasksList = new List<TextBox>();
+
+        //create a list to manage the actual visualization of cardList (f)
+        List<TextBox> cardboxList = new List<TextBox>();
+
+        //create a list to manage the label of card (f)
         List<Button> labelList = new List<Button>();
-        //IDictionary<int, Button> labelList = new Dictionary<int, Button>();
-        int x = 20;
+
+
+        int x = 20; //x-ist of cardbox
         int labelID = 1;
-        string labelTag;
-        int detectID = 0;
 
-        private TextBox addTextBox()
+        int detectID = 2;
+
+        private TextBox addCardbox()
         {
-            LinkedList<string> taskString = new LinkedList<string>();
-            TextBox textBox = new TextBox();
-            textBox.Name = "textBox";
-            textBox.BackColor = SystemColors.GradientInactiveCaption;
-            textBox.Multiline = true;
-            textBox.Location = new Point(x, 40);
-            textBox.Size = new Size(163, 275);
+            //LinkedList<string> card = new LinkedList<string>();
+            CardLinkedList card = new CardLinkedList();
 
-            tasksList.Add(textBox);
-            tasks.Add(taskString);
+            TextBox cardbox = new TextBox();
+            cardbox.Name = "textBox";
+            cardbox.BackColor = SystemColors.GradientInactiveCaption;
+            cardbox.Multiline = true;
+            cardbox.Location = new Point(x, 40);
+            cardbox.Size = new Size(163, 275);
+            cardbox.ReadOnly = true;
 
-            return textBox;
+            cardboxList.Add(cardbox);
+            cardList.Add(card);
+
+            return cardbox;
         }
 
         private Button addLabel()
@@ -37,48 +47,117 @@ namespace Trello
 
             Button label = new Button();
             label.Name = "label";
-            label.Text = textBox1.Text;
+            label.Text = cardLabelInputBox.Text;
             label.Location = new Point(x, 1);
             label.Size = new Size(160, 34);
             label.Tag = labelID++;
             label.Click += new EventHandler(myHandler);
 
-            //buttonList.Add(label);
             labelList.Add(label);
 
             return label;
         }
 
-        void myHandler(object sender, EventArgs e)
+        void myHandler(object sender, EventArgs e) //detect card id when click on label
         {
-            //Console.WriteLine("tag: " +(sender as Control).Tag);
+
             detectID = (int)(sender as Control).Tag;
-            Console.WriteLine("detectID: "+detectID);
-            //foreach (var label in labelList) {
-            //    Console.WriteLine("Label ID: {0}, Label: {1}", label.Key, label.Value);
-            //}
+            addNodeButton.Visible = true;
+            nodeInputBox.Visible = true;
+            displayNodeButton.Visible = true;
+            Console.WriteLine("detectID: " + detectID);
+
         }
 
-
-        private void button1_Click(object sender, EventArgs e)
+        Node current;
+        bool clearFlag = false;
+        private void displayNodeButton_Click(object sender, EventArgs e)
         {
-            tasks.ElementAt(detectID-1).AddLast(textBox2.Text);
-            tasksList.ElementAt(detectID-1).Text = String.Join(Environment.NewLine, tasks.ElementAt(detectID - 1));
-            textBox2.Clear();
-            textBox2.Visible = false;
+            cardList.ElementAt(detectID - 1).AddLast(new Node(nodeInputBox.Text));
+            //cardboxList.ElementAt(detectID - 1).Text = String.Join(Environment.NewLine, cardList.ElementAt(detectID - 1).toString());
+            //cardboxList.ElementAt(detectID - 1).Text = cardList.ElementAt(detectID - 1).ToString();
+
+
+            //Console.WriteLine(current.task);
+
+            if (cardList.ElementAt(detectID - 1).First.Next == null)
+            {
+                current = cardList.ElementAt(detectID - 1).First;
+                cardboxList.ElementAt(detectID - 1).AppendText(current.task);
+                cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+            }
+            else if (current.Next != null)
+            {
+                while (current.Next != null)
+                {
+                    //cardboxList.ElementAt(detectID - 1).AppendText(cardList.ElementAt(detectID - 1).First.task);
+                    cardboxList.ElementAt(detectID - 1).AppendText(current.Next.task);
+                    cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+                    current = current.Next;
+                }
+            }
+
+
+            nodeInputBox.Clear();
+            nodeInputBox.Visible = false;
+            addNodeButton.Visible = false;
+            nodeInputBox.Visible = false;
+            displayNodeButton.Visible = false;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        //edit 
+        private void editButton_Click(object sender, EventArgs e)
         {
-            textBox2.Visible = true;
+            //Console.WriteLine("pre-edit: " +current.task);       
+
+            //Console.WriteLine("post-edit: " + current.Next.task);            
+            clearFlag = true;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void displayEditButton_Click(object sender, EventArgs e)
         {
-            textBox1.Visible = true;
-            okButton.Visible = true;
+            Node editNode = cardList.ElementAt(detectID - 1).selectNode(int.Parse(inputNode.Text));
+            editNode.task = editInput.Text;
+            cardboxList.ElementAt(detectID - 1).Clear();
 
-            textBox1.Clear();
+            if (clearFlag == true)
+            {
+                current = cardList.ElementAt(detectID - 1).First;
+                cardboxList.ElementAt(detectID - 1).AppendText(cardList.ElementAt(detectID - 1).First.task);
+                cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+
+                if (cardList.ElementAt(detectID - 1).First.Next == null)
+                {
+                    current = cardList.ElementAt(detectID - 1).First;
+                    cardboxList.ElementAt(detectID - 1).AppendText(current.task);
+                    cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+                }
+                else if (current.Next != null)
+                {
+                    while (current.Next != null)
+                    {
+                        cardboxList.ElementAt(detectID - 1).AppendText(current.Next.task);
+                        cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+                        current = current.Next;
+                    }
+                }
+
+                clearFlag = false;
+                editInput.Clear();
+                editInput.Visible = false;
+            }
+        }
+        private void addNodeButton_Click(object sender, EventArgs e)
+        {
+            nodeInputBox.Visible = true;
+        }
+
+        private void addCardButton_Click(object sender, EventArgs e)
+        {
+            cardLabelInputBox.Visible = true;
+            displayCardButton.Visible = true;
+
+            cardLabelInputBox.Clear();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -86,15 +165,82 @@ namespace Trello
 
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void displayCard_Click(object sender, EventArgs e)
         {
-            panel1.Controls.Add(addLabel());
-            panel1.Controls.Add(addTextBox());
+            board.Controls.Add(addLabel());
+            board.Controls.Add(addCardbox());
             x = x + 200;
-            textBox1.Clear();
-            textBox1.Visible = false;
-            okButton.Visible = false;
+            cardLabelInputBox.Clear();
+            cardLabelInputBox.Visible = false;
+            displayCardButton.Visible = false;
         }
 
+        private void inputNode_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void inputNode_TextChanged(object sender, EventArgs e)
+        {
+            clearFlag = true;
+            displayEditButton.Visible = true;
+            editInput.Visible = true;
+        }
+
+        private void removeButton_Click(object sender, EventArgs e)
+        {
+            clearFlag = true;
+
+            if (removeInput.Text.Equals("1"))
+            {
+                cardList.ElementAt(detectID - 1).First = cardList.ElementAt(detectID - 1).selectNode(2);
+            } else
+            {
+                Node preNode = cardList.ElementAt(detectID - 1).selectNode(int.Parse(removeInput.Text) - 1);
+                Node removeNode = cardList.ElementAt(detectID - 1).selectNode(int.Parse(removeInput.Text));
+                Node nextNode = cardList.ElementAt(detectID - 1).selectNode(int.Parse(removeInput.Text) + 1);
+
+                preNode.Next = nextNode;
+            }
+
+
+            //clear and display all tasks again (after any editing and removal)
+            cardboxList.ElementAt(detectID - 1).Clear();
+            if (clearFlag == true)
+            {
+                current = cardList.ElementAt(detectID - 1).First;
+                cardboxList.ElementAt(detectID - 1).AppendText(cardList.ElementAt(detectID - 1).First.task);
+                cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+
+                if (cardList.ElementAt(detectID - 1).First.Next == null)
+                {
+                    current = cardList.ElementAt(detectID - 1).First;
+                    cardboxList.ElementAt(detectID - 1).AppendText(current.task);
+                    cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+                }
+                else if (current.Next != null)
+                {
+                    while (current.Next != null)
+                    {
+                        cardboxList.ElementAt(detectID - 1).AppendText(current.Next.task);
+                        cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+                        current = current.Next;
+                    }
+                }
+
+                clearFlag = false;
+            }
+        }
+
+        private void RemoveInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

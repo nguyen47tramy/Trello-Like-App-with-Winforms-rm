@@ -28,108 +28,186 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            button2 = new Button();
-            textBox2 = new TextBox();
-            panel1 = new Panel();
-            button3 = new Button();
-            textBox1 = new TextBox();
-            okButton = new Button();
+            displayNodeButton = new Button();
+            addNodeButton = new Button();
+            nodeInputBox = new TextBox();
+            board = new Panel();
+            addCardButton = new Button();
+            cardLabelInputBox = new TextBox();
+            displayCardButton = new Button();
+            editButton = new Button();
+            editInput = new TextBox();
+            displayEditButton = new Button();
+            inputNode = new TextBox();
+            removeButton = new Button();
+            removeInput = new TextBox();
             SuspendLayout();
             // 
-            // button1
+            // displayNodeButton
             // 
-            button1.Location = new Point(934, 12);
-            button1.Name = "button1";
-            button1.Size = new Size(160, 34);
-            button1.TabIndex = 1;
-            button1.Text = "hit it";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            displayNodeButton.Location = new Point(955, 254);
+            displayNodeButton.Name = "displayNodeButton";
+            displayNodeButton.Size = new Size(112, 34);
+            displayNodeButton.TabIndex = 1;
+            displayNodeButton.Text = "OK!";
+            displayNodeButton.UseVisualStyleBackColor = true;
+            displayNodeButton.Visible = false;
+            displayNodeButton.Click += displayNodeButton_Click;
             // 
-            // button2
+            // addNodeButton
             // 
-            button2.Location = new Point(934, 52);
-            button2.Name = "button2";
-            button2.Size = new Size(160, 34);
-            button2.TabIndex = 2;
-            button2.Text = "add task!";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            addNodeButton.Location = new Point(934, 177);
+            addNodeButton.Name = "addNodeButton";
+            addNodeButton.Size = new Size(160, 34);
+            addNodeButton.TabIndex = 2;
+            addNodeButton.Text = "Add Task";
+            addNodeButton.UseVisualStyleBackColor = true;
+            addNodeButton.Visible = false;
+            addNodeButton.Click += addNodeButton_Click;
             // 
-            // textBox2
+            // nodeInputBox
             // 
-            textBox2.Location = new Point(934, 92);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(160, 31);
-            textBox2.TabIndex = 3;
-            textBox2.Visible = false;
+            nodeInputBox.Location = new Point(934, 217);
+            nodeInputBox.Name = "nodeInputBox";
+            nodeInputBox.Size = new Size(160, 31);
+            nodeInputBox.TabIndex = 3;
+            nodeInputBox.Visible = false;
             // 
-            // panel1
+            // board
             // 
-            panel1.AutoScroll = true;
-            panel1.BackColor = SystemColors.Info;
-            panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Location = new Point(6, 3);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(922, 373);
-            panel1.TabIndex = 4;
+            board.AutoScroll = true;
+            board.BackColor = SystemColors.Info;
+            board.BorderStyle = BorderStyle.FixedSingle;
+            board.Location = new Point(6, 3);
+            board.Name = "board";
+            board.Size = new Size(922, 338);
+            board.TabIndex = 4;
             // 
-            // button3
+            // addCardButton
             // 
-            button3.Location = new Point(949, 129);
-            button3.Name = "button3";
-            button3.Size = new Size(131, 133);
-            button3.TabIndex = 5;
-            button3.Text = "add list!";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            addCardButton.Location = new Point(934, 12);
+            addCardButton.Name = "addCardButton";
+            addCardButton.Size = new Size(160, 38);
+            addCardButton.TabIndex = 5;
+            addCardButton.Text = "Add Card";
+            addCardButton.UseVisualStyleBackColor = true;
+            addCardButton.Click += addCardButton_Click;
             // 
-            // textBox1
+            // cardLabelInputBox
             // 
-            textBox1.Location = new Point(934, 280);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(160, 31);
-            textBox1.TabIndex = 6;
-            textBox1.Visible = false;
-            textBox1.TextChanged += textBox1_TextChanged;
+            cardLabelInputBox.Location = new Point(934, 56);
+            cardLabelInputBox.Name = "cardLabelInputBox";
+            cardLabelInputBox.Size = new Size(160, 31);
+            cardLabelInputBox.TabIndex = 6;
+            cardLabelInputBox.Visible = false;
+            cardLabelInputBox.TextChanged += textBox1_TextChanged;
             // 
-            // okButton
+            // displayCardButton
             // 
-            okButton.Location = new Point(959, 317);
-            okButton.Name = "okButton";
-            okButton.Size = new Size(112, 34);
-            okButton.TabIndex = 7;
-            okButton.Text = "OK!";
-            okButton.UseVisualStyleBackColor = true;
-            okButton.Visible = false;
-            okButton.Click += button4_Click;
+            displayCardButton.Location = new Point(955, 93);
+            displayCardButton.Name = "displayCardButton";
+            displayCardButton.Size = new Size(112, 34);
+            displayCardButton.TabIndex = 7;
+            displayCardButton.Text = "OK!";
+            displayCardButton.UseVisualStyleBackColor = true;
+            displayCardButton.Visible = false;
+            displayCardButton.Click += displayCard_Click;
+            // 
+            // editButton
+            // 
+            editButton.Location = new Point(6, 359);
+            editButton.Name = "editButton";
+            editButton.Size = new Size(160, 34);
+            editButton.TabIndex = 8;
+            editButton.Text = "edit";
+            editButton.UseVisualStyleBackColor = true;
+            editButton.Click += editButton_Click;
+            // 
+            // editInput
+            // 
+            editInput.Location = new Point(169, 398);
+            editInput.Name = "editInput";
+            editInput.Size = new Size(100, 31);
+            editInput.TabIndex = 9;
+            editInput.Visible = false;
+            // 
+            // displayEditButton
+            // 
+            displayEditButton.Location = new Point(172, 359);
+            displayEditButton.Name = "displayEditButton";
+            displayEditButton.Size = new Size(154, 34);
+            displayEditButton.TabIndex = 10;
+            displayEditButton.Text = "displayEditButton";
+            displayEditButton.UseVisualStyleBackColor = true;
+            displayEditButton.Visible = false;
+            displayEditButton.Click += displayEditButton_Click;
+            // 
+            // inputNode
+            // 
+            inputNode.Location = new Point(6, 399);
+            inputNode.MaxLength = 1;
+            inputNode.Name = "inputNode";
+            inputNode.PlaceholderText = "which task?";
+            inputNode.Size = new Size(100, 31);
+            inputNode.TabIndex = 11;
+            inputNode.TextChanged += inputNode_TextChanged;
+            inputNode.KeyPress += inputNode_KeyPress;
+            // 
+            // removeButton
+            // 
+            removeButton.Location = new Point(332, 359);
+            removeButton.Name = "removeButton";
+            removeButton.Size = new Size(112, 34);
+            removeButton.TabIndex = 12;
+            removeButton.Text = "remove";
+            removeButton.UseVisualStyleBackColor = true;
+            removeButton.Click += removeButton_Click;
+            // 
+            // removeInput
+            // 
+            removeInput.Location = new Point(332, 398);
+            removeInput.Name = "removeInput";
+            removeInput.Size = new Size(150, 31);
+            removeInput.TabIndex = 13;
+            removeInput.KeyPress += RemoveInput_KeyPress;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1106, 451);
-            Controls.Add(okButton);
-            Controls.Add(textBox1);
-            Controls.Add(button3);
-            Controls.Add(textBox2);
-            Controls.Add(button2);
-            Controls.Add(button1);
-            Controls.Add(panel1);
+            ClientSize = new Size(1101, 453);
+            Controls.Add(removeInput);
+            Controls.Add(removeButton);
+            Controls.Add(inputNode);
+            Controls.Add(displayEditButton);
+            Controls.Add(editInput);
+            Controls.Add(editButton);
+            Controls.Add(displayNodeButton);
+            Controls.Add(displayCardButton);
+            Controls.Add(nodeInputBox);
+            Controls.Add(addNodeButton);
+            Controls.Add(cardLabelInputBox);
+            Controls.Add(addCardButton);
+            Controls.Add(board);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Trello";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private Button button1;
-        private Button button2;
-        private TextBox textBox2;
-        private Panel panel1;
-        private Button button3;
-        private TextBox textBox1;
-        private Button okButton;
+        private Button displayNodeButton;
+        private Button addNodeButton;
+        private TextBox nodeInputBox;
+        private Panel board;
+        private Button addCardButton;
+        private TextBox cardLabelInputBox;
+        private Button displayCardButton;
+        private Button editButton;
+        private TextBox editInput;
+        private Button displayEditButton;
+        private TextBox inputNode;
+        private Button removeButton;
+        private TextBox removeInput;
     }
 }
