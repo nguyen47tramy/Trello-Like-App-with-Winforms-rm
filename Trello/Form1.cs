@@ -35,9 +35,11 @@ namespace Trello
             cardbox.Location = new Point(x, 40);
             cardbox.Size = new Size(163, 275);
             cardbox.ReadOnly = true;
+            cardbox.ScrollBars = ScrollBars.Vertical;
 
             cardboxList.Add(cardbox);
             cardList.Add(card);
+
 
             return cardbox;
         }
@@ -71,6 +73,51 @@ namespace Trello
 
         Node current;
         bool clearFlag = false;
+        bool onlyOneFlag = false;
+
+        private void displayAll()
+        {
+            cardboxList.ElementAt(detectID - 1).Clear();
+
+            if (cardList.ElementAt(detectID - 1).First == null)
+            {
+                cardboxList.ElementAt(detectID - 1).Text = "EMPTY";
+                clearFlag = false;
+                displayRemoveButton.Visible = false;
+            }
+
+            if (cardList.ElementAt(detectID - 1).First != null && cardList.ElementAt(detectID - 1).First.Next == null)
+            {
+                onlyOneFlag = true;
+            }
+
+            if (clearFlag == true && cardList.ElementAt(detectID - 1).First != null)
+            {
+                current = cardList.ElementAt(detectID - 1).First;
+                Console.WriteLine("first: " + (cardList.ElementAt(detectID - 1).First.task));
+
+                if (onlyOneFlag == true)
+                {
+                    current = cardList.ElementAt(detectID - 1).First;
+                    cardboxList.ElementAt(detectID - 1).AppendText(current.task);
+                    cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+                }
+                else if (current.Next != null)
+                {
+                    cardboxList.ElementAt(detectID - 1).AppendText(cardList.ElementAt(detectID - 1).First.task);
+                    cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+
+                    while (current.Next != null)
+                    {
+                        cardboxList.ElementAt(detectID - 1).AppendText(current.Next.task);
+                        cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
+                        current = current.Next;
+                    }
+                }
+
+                clearFlag = false;
+            }
+        }
         private void displayNodeButton_Click(object sender, EventArgs e)
         {
             cardList.ElementAt(detectID - 1).AddLast(new Node(nodeInputBox.Text));
@@ -112,6 +159,7 @@ namespace Trello
 
             //Console.WriteLine("post-edit: " + current.Next.task);            
             clearFlag = true;
+            inputNode.Visible = true;
         }
 
         private void displayEditButton_Click(object sender, EventArgs e)
@@ -120,32 +168,9 @@ namespace Trello
             editNode.task = editInput.Text;
             cardboxList.ElementAt(detectID - 1).Clear();
 
-            if (clearFlag == true)
-            {
-                current = cardList.ElementAt(detectID - 1).First;
-                cardboxList.ElementAt(detectID - 1).AppendText(cardList.ElementAt(detectID - 1).First.task);
-                cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
-
-                if (cardList.ElementAt(detectID - 1).First.Next == null)
-                {
-                    current = cardList.ElementAt(detectID - 1).First;
-                    cardboxList.ElementAt(detectID - 1).AppendText(current.task);
-                    cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
-                }
-                else if (current.Next != null)
-                {
-                    while (current.Next != null)
-                    {
-                        cardboxList.ElementAt(detectID - 1).AppendText(current.Next.task);
-                        cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
-                        current = current.Next;
-                    }
-                }
-
-                clearFlag = false;
-                editInput.Clear();
-                editInput.Visible = false;
-            }
+            displayAll();
+            editInput.Clear();
+            editInput.Visible = false;
         }
         private void addNodeButton_Click(object sender, EventArgs e)
         {
@@ -173,6 +198,7 @@ namespace Trello
             cardLabelInputBox.Clear();
             cardLabelInputBox.Visible = false;
             displayCardButton.Visible = false;
+
         }
 
         private void inputNode_KeyPress(object sender, KeyPressEventArgs e)
@@ -192,12 +218,36 @@ namespace Trello
 
         private void removeButton_Click(object sender, EventArgs e)
         {
+            displayRemoveButton.Visible = true;
+            removeInput.Visible = true;
+        }
+
+        private void RemoveInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            if (cardList.ElementAt(detectID - 1).First != null)
+            {
+                displayRemoveButton.Visible = true;
+            }
+            else
+            {
+                displayRemoveButton.Visible = false;
+            }
+        }
+
+        private void displayRemoveButton_Click(object sender, EventArgs e)
+        {
             clearFlag = true;
 
             if (removeInput.Text.Equals("1"))
             {
                 cardList.ElementAt(detectID - 1).First = cardList.ElementAt(detectID - 1).selectNode(2);
-            } else
+            }
+            else
             {
                 Node preNode = cardList.ElementAt(detectID - 1).selectNode(int.Parse(removeInput.Text) - 1);
                 Node removeNode = cardList.ElementAt(detectID - 1).selectNode(int.Parse(removeInput.Text));
@@ -208,39 +258,7 @@ namespace Trello
 
 
             //clear and display all tasks again (after any editing and removal)
-            cardboxList.ElementAt(detectID - 1).Clear();
-            if (clearFlag == true)
-            {
-                current = cardList.ElementAt(detectID - 1).First;
-                cardboxList.ElementAt(detectID - 1).AppendText(cardList.ElementAt(detectID - 1).First.task);
-                cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
-
-                if (cardList.ElementAt(detectID - 1).First.Next == null)
-                {
-                    current = cardList.ElementAt(detectID - 1).First;
-                    cardboxList.ElementAt(detectID - 1).AppendText(current.task);
-                    cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
-                }
-                else if (current.Next != null)
-                {
-                    while (current.Next != null)
-                    {
-                        cardboxList.ElementAt(detectID - 1).AppendText(current.Next.task);
-                        cardboxList.ElementAt(detectID - 1).AppendText(Environment.NewLine);
-                        current = current.Next;
-                    }
-                }
-
-                clearFlag = false;
-            }
-        }
-
-        private void RemoveInput_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
-            {
-                e.Handled = true;
-            }
+            displayAll();
         }
     }
 }
