@@ -1,4 +1,7 @@
 # Trello-Like-App-with-Winforms-rm
+
+The application is designed with the requirement of self-implementing a Linked List to imitate how the Trello app works. 
+
 # demo app
 
 
