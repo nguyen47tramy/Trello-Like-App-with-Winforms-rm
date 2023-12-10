@@ -3,7 +3,7 @@
 The application is designed with the requirement of self-implementing a Linked List to imitate how the Trello app works. 
 As for Trello, Linked List might not be the optimal data structure to work with. However, in this case, it is being used as part of a homework assignment.
 
-# demo app
+# Demo 
 
 
 
